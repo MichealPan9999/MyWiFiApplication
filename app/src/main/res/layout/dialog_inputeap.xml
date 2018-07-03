@@ -56,14 +56,14 @@
 
         <TextView
             android:id="@+id/tv_ca_certificate"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="EAP Method:" />
+            android:text="CA Certificate:" />
 
         <Spinner
             android:id="@+id/sp_ca_certificate"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"></Spinner>
     </LinearLayout>
@@ -77,16 +77,16 @@
 
         <TextView
             android:id="@+id/tv_user_certificate"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="EAP Method:" />
+            android:text="User Certification:" />
 
         <Spinner
             android:id="@+id/sp_user_certificate"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"></Spinner>
+            android:layout_weight="5"></Spinner>
     </LinearLayout>
 
     <LinearLayout
@@ -98,16 +98,16 @@
 
         <TextView
             android:id="@+id/tv_identity"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="EAP Method:" />
+            android:text="Identity:" />
 
         <Spinner
             android:id="@+id/sp_identity"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"></Spinner>
+            android:layout_weight="5"></Spinner>
     </LinearLayout>
 
     <LinearLayout
@@ -119,16 +119,16 @@
 
         <TextView
             android:id="@+id/tv_annoymous"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="EAP Method:" />
+            android:text="Annoymous:" />
 
         <EditText
             android:id="@+id/sp_annoymous"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"></EditText>
+            android:layout_weight="5"></EditText>
     </LinearLayout>
 
     <LinearLayout
@@ -140,15 +140,15 @@
 
         <TextView
             android:id="@+id/tv_password"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="EAP Method:" />
+            android:text="Password:" />
 
         <EditText
             android:id="@+id/sp_password"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"></EditText>
+            android:layout_weight="5"></EditText>
     </LinearLayout>
 </LinearLayout>

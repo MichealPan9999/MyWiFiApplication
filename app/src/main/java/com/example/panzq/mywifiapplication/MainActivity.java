@@ -212,7 +212,8 @@ public class MainActivity extends Activity {
                     if (wifi.capabilities.contains("WPA-EAP")) {
                         createEapDailog(wifi, factory);
                     } else {
-                        new AlertDialog.Builder(context)
+                        createEapDailog(wifi, factory);
+                        /*new AlertDialog.Builder(context)
                                 .setTitle("请输入该无线的连接密码")
                                 .setMessage("无线SSID：" + wifi.SSID)
                                 .setIcon(android.R.drawable.ic_dialog_info)
@@ -238,7 +239,7 @@ public class MainActivity extends Activity {
                                             public void onClick(DialogInterface dialog,
                                                                 int which) {
                                             }
-                                        }).setCancelable(false).show();
+                                        }).setCancelable(false).show();*/
                     }
 
                 } else {
