@@ -14,14 +14,14 @@
             android:id="@+id/switch_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="关" />
+            android:text="@string/str_off_ch" />
         <!--wifi开关按钮-->
         <Switch
             android:id="@+id/switch_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textOff="OFF"
-            android:textOn="ON"
+            android:textOff="@string/str_off_en"
+            android:textOn="@string/str_on_en"
             android:thumb="@drawable/thumb_selector"
             android:track="@drawable/track_selector" />
 

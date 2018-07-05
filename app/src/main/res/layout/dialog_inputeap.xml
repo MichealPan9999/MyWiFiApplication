@@ -5,150 +5,142 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/ll_eap_method"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_eap_method"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="EAP Method:" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/sp_eap_method"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"></Spinner>
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_eap_method"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/ll_phase2_auth"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_eap_method"
+                    style="@style/wifi_item_label"
+                    android:text="@string/str_eap_method" />
 
-        <TextView
-            android:id="@+id/tv_phase2_auth"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Phase 2 authentication:" />
+                <Spinner
+                    android:id="@+id/sp_eap_method"
+                    style="@style/wifi_item_content"
+                    android:entries="@array/wifi_eap_method"
+                    android:prompt="@string/wifi_eap_method"></Spinner>
+            </LinearLayout>
 
-        <Spinner
-            android:id="@+id/sp_phase2_auth"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"></Spinner>
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_phase2_auth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/ll_ca_certificate"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_phase2_auth"
+                    style="@style/wifi_item_label"
+                    android:text="@string/str_phase" />
 
-        <TextView
-            android:id="@+id/tv_ca_certificate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="CA Certificate:" />
+                <Spinner
+                    android:id="@+id/sp_phase2_auth"
+                    style="@style/wifi_item_content"
+                    android:entries="@array/wifi_phase2_entries"
+                    android:prompt="@string/please_select_phase2"></Spinner>
+            </LinearLayout>
 
-        <Spinner
-            android:id="@+id/sp_ca_certificate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"></Spinner>
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_ca_certificate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/ll_user_certificate"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_ca_certificate"
+                    style="@style/wifi_item_label"
+                    android:text="@string/str_ca_certificate" />
 
-        <TextView
-            android:id="@+id/tv_user_certificate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="User Certification:" />
+                <Spinner
+                    android:id="@+id/sp_ca_certificate"
+                    style="@style/wifi_item_content"
+                    android:prompt="@string/wifi_eap_ca_cert"></Spinner>
+            </LinearLayout>
 
-        <Spinner
-            android:id="@+id/sp_user_certificate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"></Spinner>
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_user_certificate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/ll_identity"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_user_certificate"
+                    style="@style/wifi_item_label"
+                    android:text="@string/str_user_certificate" />
 
-        <TextView
-            android:id="@+id/tv_identity"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Identity:" />
+                <Spinner
+                    android:id="@+id/sp_user_certificate"
+                    style="@style/wifi_item_content"
+                    android:prompt="@string/wifi_eap_user_cert"></Spinner>
+            </LinearLayout>
 
-        <Spinner
-            android:id="@+id/sp_identity"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"></Spinner>
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_identity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/ll_annoymous"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_identity"
+                    style="@style/wifi_item_label"
+                    android:text="@string/str_identity" />
 
-        <TextView
-            android:id="@+id/tv_annoymous"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Annoymous:" />
+                <EditText
+                    android:id="@+id/et_identity"
+                    style="@style/wifi_item_content"
+                    android:hint="@string/str_hint_identity"
+                    android:inputType="textNoSuggestions"></EditText>
+            </LinearLayout>
 
-        <EditText
-            android:id="@+id/sp_annoymous"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"></EditText>
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_annoymous"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/ll_password"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_annoymous"
+                    style="@style/wifi_item_label"
+                    android:text="@string/str_annoymous" />
 
-        <TextView
-            android:id="@+id/tv_password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Password:" />
+                <EditText
+                    android:id="@+id/et_annoymous"
+                    style="@style/wifi_item_content"
+                    android:hint="@string/str_hint_annoymous"
+                    android:inputType="textNoSuggestions"></EditText>
+            </LinearLayout>
 
-        <EditText
-            android:id="@+id/sp_password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"></EditText>
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_password"
+                    style="@style/wifi_item_label"
+                    android:text="@string/str_password" />
+
+                <EditText
+                    android:id="@+id/et_password"
+                    style="@style/wifi_item_content"
+                    android:hint="@string/str_hint_password"></EditText>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

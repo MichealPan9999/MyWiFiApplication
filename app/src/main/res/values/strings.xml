@@ -4,5 +4,25 @@
     <string name="app_name">Android_WiFitest</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="wifi_eap_method">EAP method</string>
+    <string name="please_select_phase2">Phase 2 authentication</string>
+    <string name="wifi_eap_ca_cert">CA certificate</string>
+    <string name="wifi_eap_user_cert">User certificate</string>
+    <string name="wifi_eap_user_proxy">ProxySettings</string>
+
+
+    <string name="str_off_ch">关</string>
+    <string name="str_off_en">OFF</string>
+    <string name="str_on_en">ON</string>
+    <string name="str_eap_method">EAP Method:</string>
+    <string name="str_phase">Phase 2 authentication:</string>
+    <string name="str_ca_certificate">CA Certificate:</string>
+    <string name="str_user_certificate">User Certification:</string>
+    <string name="str_identity">Identity:</string>
+    <string name="str_hint_identity">请输入身份</string>
+    <string name="str_annoymous">Annoymous:</string>
+    <string name="str_hint_annoymous">匿名验证</string>
+    <string name="str_password">Password:</string>
+    <string name="str_hint_password">请输入密码</string>
 
 </resources>

@@ -106,7 +106,7 @@ public class MainActivity extends Activity {
                 Activity activity = MainActivity.this;
                 if (activity != null) {
                     Toast.makeText(activity,
-                            "联网成功",
+                            "......",
                             Toast.LENGTH_SHORT).show();
                 }
             }
@@ -556,10 +556,14 @@ public class MainActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         initEapDialogView(inputEapView);
-                        WifiConfiguration config = getEapCofnig(wifi);
+                        WifiConfiguration config = new WifiConfiguration();
+                        config.SSID = wifi.SSID;
+                        config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_EAP);
+                        config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.IEEE8021X);
                         config.enterpriseConfig = new WifiEnterpriseConfig();
                         int eapMethod = spEapMethod.getSelectedItemPosition();
                         int phase2Method = spPhase2.getSelectedItemPosition();
+                        config.enterpriseConfig.setEapMethod(eapMethod);
                         Log.d("panzqww", "-----eapMethod-----" + eapMethod);
                         Log.d("panzqww", "-----phase2Method-----" + phase2Method);
                         switch (eapMethod) {
@@ -600,13 +604,16 @@ public class MainActivity extends Activity {
                         config.enterpriseConfig.setPassword(etPassword.getText().toString());
                         config.setProxySettings(IpConfiguration.ProxySettings.NONE);
                         config.setIpAssignment(IpConfiguration.IpAssignment.DHCP);
-                        Log.d("panzqww","Identity ==== "+etIdentity.getText().toString());
-                        Log.d("panzqww","AnonymousIdentity ==== "+etAnnoymous.getText().toString());
-                        Log.d("panzqww","getProxySettings ==== "+config.getProxySettings());
-                        Log.d("panzqww","getIpAssignment ==== "+config.getIpAssignment());
+                        Log.d("panzqww", "Identity ==== " + etIdentity.getText().toString());
+                        Log.d("panzqww", "AnonymousIdentity ==== " + etAnnoymous.getText().toString());
+                        Log.d("panzqww", "getProxySettings ==== " + config.getProxySettings());
+                        Log.d("panzqww", "getIpAssignment ==== " + config.getIpAssignment());
+			config.networkId = -1;
                         int wcgId = mWifiManager.addNetwork(config);
-                        //mWifiManager.enableNetwork(wcgId, true);
-                        mWifiManager.connect(wcgId,mConnectListener);
+                        Log.d("panzqww", " wcgId==== " + wcgId);
+                        mWifiManager.enableNetwork(wcgId, true);
+                       // mWifiManager.save(config, mConnectListener);
+                        //mWifiManager.connect(config, mConnectListener);
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
