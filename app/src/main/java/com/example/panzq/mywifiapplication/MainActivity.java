@@ -10,25 +10,31 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.IpConfiguration;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiEnterpriseConfig;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
-import android.os.Bundle;
+import android.security.Credentials;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.panzq.mywifiapplication.adapter.WifiAdapter;
 import com.example.panzq.mywifiapplication.wifi.LinkWifi;
@@ -40,7 +46,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 
 public class MainActivity extends Activity {
 
@@ -63,6 +68,21 @@ public class MainActivity extends Activity {
     private LinearLayout layout;
     private WifiAdapter mWifiAdapter;
 
+    private Spinner spEapMethod;
+    private Spinner spPhase2;
+    private Spinner spCACertificate;
+    private Spinner spUserCert;
+    private EditText etIdentity;
+    private EditText etAnnoymous;
+    private EditText etPassword;
+    /* These values come from "wifi_peap_phase2_entries" resource array */
+    public static final int WIFI_PEAP_PHASE2_NONE = 0;
+    public static final int WIFI_PEAP_PHASE2_MSCHAPV2 = 1;
+    public static final int WIFI_PEAP_PHASE2_GTC = 2;
+    private String unspecifiedCert;
+    private Spinner spProxy;
+
+    private WifiManager.ActionListener mConnectListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +100,27 @@ public class MainActivity extends Activity {
         mWifiManager = (WifiManager) context.getSystemService(Service.WIFI_SERVICE);
         mScanner = new Scanner(this);
         linkWifi = new LinkWifi(context);
+        mConnectListener = new WifiManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Activity activity = MainActivity.this;
+                if (activity != null) {
+                    Toast.makeText(activity,
+                            "联网成功",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(int reason) {
+                Activity activity = MainActivity.this;
+                if (activity != null) {
+                    Toast.makeText(activity,
+                            "无法连接到网络",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
         initView();
         initIntentFilter();
         registerListener();
@@ -212,8 +253,8 @@ public class MainActivity extends Activity {
                     if (wifi.capabilities.contains("WPA-EAP")) {
                         createEapDailog(wifi, factory);
                     } else {
-                        createEapDailog(wifi, factory);
-                        /*new AlertDialog.Builder(context)
+                        //createEapDailog(wifi, factory);
+                        new AlertDialog.Builder(context)
                                 .setTitle("请输入该无线的连接密码")
                                 .setMessage("无线SSID：" + wifi.SSID)
                                 .setIcon(android.R.drawable.ic_dialog_info)
@@ -239,7 +280,7 @@ public class MainActivity extends Activity {
                                             public void onClick(DialogInterface dialog,
                                                                 int which) {
                                             }
-                                        }).setCancelable(false).show();*/
+                                        }).setCancelable(false).show();
                     }
 
                 } else {
@@ -479,6 +520,27 @@ public class MainActivity extends Activity {
             }
             sendEmptyMessageDelayed(0, 10 * 1000);//10s后再次发送message
         }
+
+    }
+
+    private void initEapDialogView(View inputEapView) {
+        spEapMethod = (Spinner) inputEapView
+                .findViewById(R.id.sp_eap_method);
+        spPhase2 = (Spinner) inputEapView
+                .findViewById(R.id.sp_phase2_auth);
+        spCACertificate = (Spinner) inputEapView
+                .findViewById(R.id.sp_ca_certificate);
+        spUserCert = (Spinner) inputEapView
+                .findViewById(R.id.sp_user_certificate);
+        etIdentity = (EditText) inputEapView
+                .findViewById(R.id.et_identity);
+        etAnnoymous = (EditText) inputEapView
+                .findViewById(R.id.et_annoymous);
+        etPassword = (EditText) inputEapView
+                .findViewById(R.id.et_password);
+        //spProxy = (Spinner) inputEapView.findViewById(R.id.sp_proxy);
+        loadCertificates(spCACertificate, Credentials.CA_CERTIFICATE);
+        loadCertificates(spUserCert, Credentials.USER_PRIVATE_KEY);
     }
 
 
@@ -493,7 +555,58 @@ public class MainActivity extends Activity {
                 .setPositiveButton("连接", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        initEapDialogView(inputEapView);
                         WifiConfiguration config = getEapCofnig(wifi);
+                        config.enterpriseConfig = new WifiEnterpriseConfig();
+                        int eapMethod = spEapMethod.getSelectedItemPosition();
+                        int phase2Method = spPhase2.getSelectedItemPosition();
+                        Log.d("panzqww", "-----eapMethod-----" + eapMethod);
+                        Log.d("panzqww", "-----phase2Method-----" + phase2Method);
+                        switch (eapMethod) {
+                            case WifiEnterpriseConfig.Eap.PEAP:
+                                // PEAP supports limited phase2 values
+                                // Map the index from the PHASE2_PEAP_ADAPTER to the one used
+                                // by the API which has the full list of PEAP methods.
+                                switch (phase2Method) {
+                                    case WIFI_PEAP_PHASE2_NONE:
+                                        config.enterpriseConfig.setPhase2Method(WifiEnterpriseConfig.Phase2.NONE);
+                                        break;
+                                    case WIFI_PEAP_PHASE2_MSCHAPV2:
+                                        config.enterpriseConfig.setPhase2Method(WifiEnterpriseConfig.Phase2.MSCHAPV2);
+                                        break;
+                                    case WIFI_PEAP_PHASE2_GTC:
+                                        config.enterpriseConfig.setPhase2Method(WifiEnterpriseConfig.Phase2.GTC);
+                                        break;
+                                    default:
+                                        Log.e("panzqww", "Unknown phase2 method" + phase2Method);
+                                        break;
+                                }
+                            default:
+                                // The default index from PHASE2_FULL_ADAPTER maps to the API
+                                config.enterpriseConfig.setPhase2Method(phase2Method);
+                                break;
+                        }
+                        String caCert = (String) spCACertificate.getSelectedItem();
+                        Log.d("panzqww", "----caCert ==== " + caCert);
+                        if (caCert.equals(unspecifiedCert)) caCert = "";
+                        config.enterpriseConfig.setCaCertificateAlias(caCert);
+                        String clientCert = (String) spUserCert.getSelectedItem();
+                        if (clientCert.equals(unspecifiedCert)) clientCert = "";
+                        Log.d("panzqww", "------clientCert ====" + clientCert);
+                        config.enterpriseConfig.setClientCertificateAlias(clientCert);
+                        config.enterpriseConfig.setIdentity(etIdentity.getText().toString());
+                        config.enterpriseConfig.setAnonymousIdentity(
+                                etAnnoymous.getText().toString());
+                        config.enterpriseConfig.setPassword(etPassword.getText().toString());
+                        config.setProxySettings(IpConfiguration.ProxySettings.NONE);
+                        config.setIpAssignment(IpConfiguration.IpAssignment.DHCP);
+                        Log.d("panzqww","Identity ==== "+etIdentity.getText().toString());
+                        Log.d("panzqww","AnonymousIdentity ==== "+etAnnoymous.getText().toString());
+                        Log.d("panzqww","getProxySettings ==== "+config.getProxySettings());
+                        Log.d("panzqww","getIpAssignment ==== "+config.getIpAssignment());
+                        int wcgId = mWifiManager.addNetwork(config);
+                        //mWifiManager.enableNetwork(wcgId, true);
+                        mWifiManager.connect(wcgId,mConnectListener);
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -556,6 +669,7 @@ public class MainActivity extends Activity {
             i = localWifiConfiguration.priority;
         }
     }
+
     private int shiftPriorityAndSave() {
         List<WifiConfiguration> localList = mWifiManager
                 .getConfiguredNetworks();
@@ -572,14 +686,35 @@ public class MainActivity extends Activity {
             mWifiManager.updateNetwork(localWifiConfiguration);
         }
     }
+
     private void sortByPriority(List<WifiConfiguration> paramList) {
         Collections.sort(paramList, new WifiManagerCompare());
     }
+
     class WifiManagerCompare implements Comparator<WifiConfiguration> {
         public int compare(WifiConfiguration paramWifiConfiguration1,
                            WifiConfiguration paramWifiConfiguration2) {
             return paramWifiConfiguration1.priority
                     - paramWifiConfiguration2.priority;
         }
+    }
+
+    private void loadCertificates(Spinner spinner, String prefix) {
+        unspecifiedCert = "unspecified";
+        //String[] certs = KeyStore.getInstance().saw(prefix, android.os.Process.WIFI_UID);
+        String[] certs = null;
+        if (certs == null || certs.length == 0) {
+            certs = new String[]{unspecifiedCert};
+        } else {
+            final String[] array = new String[certs.length + 1];
+            array[0] = unspecifiedCert;
+            System.arraycopy(certs, 0, array, 1, certs.length);
+            certs = array;
+        }
+
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                context, android.R.layout.simple_spinner_item, certs);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 }
